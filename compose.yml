@@ -1,10 +1,13 @@
 services:
     mosml:
-        image: mosml:latest
+        image: ghcr.io/francesco146/mosml:latest
         build:
             context: .
             dockerfile: Dockerfile
-            platform: linux/amd64
+            tags:
+                - mosml:latest
+                - ghcr.io/francesco146/mosml:latest
+        platform: linux/amd64
         container_name: mosml
         volumes:
             - ./src:/workspace
