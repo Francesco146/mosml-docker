@@ -2,19 +2,19 @@
 
 Containerized version of Moscow ML (version 2.10.2) for easy cross-platform usage.
 
-## Quick Start (Using Pre-built Image)
+## Quick Start
 
 ### Prerequisites
 
-- Docker installed and running
+- Docker and Docker Compose installed and running
 
 ### Download and Use
 
-1. Clone the repository or download the wrapper scripts:
+1. Clone the repository:
 
     ```bash
-    git clone https://github.com/Francesco146/mosml.git
-    cd mosml
+    git clone https://github.com/Francesco146/mosml-docker.git
+    cd mosml-docker
     ```
 
 2. Run Moscow ML using the provided script (bash, PowerShell, or Fish):
@@ -30,10 +30,10 @@ Containerized version of Moscow ML (version 2.10.2) for easy cross-platform usag
     ./mosml.sh -P full myprogram.sml
     ```
 
-The script will automatically:
+The wrapper scripts will automatically:
 
-- Pull the pre-built image from GitHub Container Registry
-- Fall back to building locally if the pull fails
+- Try to pull the pre-built image from GitHub Container Registry
+- Fall back to building locally with Docker Compose if the pull fails
 - Create a `src/` directory for your SML files
 - Mount it to the container automatically
 
@@ -45,59 +45,35 @@ Run the hello world program from `src/hello.sml`:
 ./mosml.sh hello.sml
 ```
 
+Any SML files you place in the `src/` directory will be accessible inside the container at `/workspace`. You can edit them on your host machine and run them inside the container:
+
+```bash
+./mosml.sh myprogram.sml
+```
+
+Or using the REPL interactively:
+
+```sml
+- use "myprogram.sml";
+```
+
 ## Building Locally
 
-If you prefer to build the image yourself:
+If you prefer to use Docker Compose directly without the wrapper scripts:
 
 ```bash
 # Build the image
-docker build --platform linux/amd64 -t mosml .
-
-# Run it
-docker run --rm -it -v $(pwd)/src:/workspace mosml
-```
-
-## Using Docker Compose
-
-```bash
-# Build
-docker-compose build
+docker compose build
 
 # Run interactively
-docker-compose run --rm mosml
-
-# Run a file
-docker-compose run --rm mosml hello.sml
-```
-
-## Manual Docker Usage
-
-Without the wrapper scripts:
-
-```bash
-# Pull the image and give it a name
-docker pull ghcr.io/francesco146/mosml:latest && \
-    docker tag ghcr.io/francesco146/mosml:latest mosml
-
-# Run interactively
-docker run --rm -it \
-    --platform linux/amd64 \
-    -v $(pwd)/src:/workspace \
-    mosml
+docker compose run --rm mosml
 
 # Run a specific file
-docker run --rm -it \
-    --platform linux/amd64 \
-    -v $(pwd)/src:/workspace \
-    mosml myprogram.sml
+docker compose run --rm mosml hello.sml
+
+# Pass Moscow ML options
+docker compose run --rm mosml -P full myprogram.sml
 ```
-
-## How It Works
-
-1. The wrapper scripts (`mosml.sh`, `mosml.ps1`, `mosml.fish`) first attempt to pull the pre-built image from GitHub Container Registry
-2. If the pull fails (network issues, image not yet published, etc.), they automatically build the image locally
-3. Your SML files in the `src/` directory are mounted into the container at `/workspace`
-4. Moscow ML runs inside the container with access to your local files
 
 ## Platform Notes
 
