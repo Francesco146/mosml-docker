@@ -1,7 +1,11 @@
 services:
     mosml:
-        build: .
-        platform: linux/amd64
+        image: mosml:latest
+        build:
+            context: .
+            dockerfile: Dockerfile
+            platform: linux/amd64
+        container_name: mosml
         volumes:
             - ./src:/workspace
         stdin_open: true
