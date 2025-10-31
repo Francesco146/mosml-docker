@@ -7,7 +7,6 @@ Containerized version of Moscow ML (version 2.10.2) for easy cross-platform usag
 ### Prerequisites
 
 - Docker installed and running
-- Git (optional, for cloning)
 
 ### Download and Use
 
@@ -77,8 +76,8 @@ Without the wrapper scripts:
 
 ```bash
 # Pull the image and give it a name
-docker pull ghcr.io/Francesco146/mosml:latest && \
-    docker tag ghcr.io/Francesco146/mosml:latest mosml
+docker pull ghcr.io/francesco146/mosml:latest && \
+    docker tag ghcr.io/francesco146/mosml:latest mosml
 
 # Run interactively
 docker run --rm -it \
@@ -103,28 +102,3 @@ docker run --rm -it \
 ## Platform Notes
 
 This image is built for `linux/amd64` architecture. On Apple Silicon (M1/M2/M3) Macs, Docker will automatically use Rosetta emulation.
-
-## Comandi per Push su GitHub Container Registry
-
-```bash
-# 1. Fai login a GitHub Container Registry
-echo $GITHUB_TOKEN | docker login ghcr.io -u Francesco146 --password-stdin
-
-# Oppure con GitHub CLI
-gh auth token | docker login ghcr.io -u Francesco146 --password-stdin
-
-# 2. Build con il tag corretto
-docker build --platform linux/amd64 -t ghcr.io/Francesco146/mosml:latest .
-
-# 3. (Opzionale) Tagga anche con la versione
-docker tag ghcr.io/Francesco146/mosml:latest ghcr.io/Francesco146/mosml:2.10.2
-
-# 4. Push al registry
-docker push ghcr.io/Francesco146/mosml:latest
-docker push ghcr.io/Francesco146/mosml:2.10.2
-
-# 5. Rendi l'immagine pubblica
-# Vai su: https://github.com/Francesco146?tab=packages
-# Seleziona il package mosml
-# Settings -> Change visibility -> Public
-```
