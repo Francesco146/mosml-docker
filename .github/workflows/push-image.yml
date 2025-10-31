@@ -9,6 +9,8 @@ env:
     REGISTRY: ghcr.io
     IMAGE_NAME: ${{ github.repository_owner }}/mosml
     MOSML_VERSION: 2.10.2
+    DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+    DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
 jobs:
     build:
@@ -21,18 +23,26 @@ jobs:
             - name: Checkout repository
               uses: actions/checkout@v5
 
-            - name: Log in to Container registry
+            - name: Log in to GitHub Container Registry
               uses: docker/login-action@v3.6.0
               with:
                   registry: ${{ env.REGISTRY }}
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
 
+            - name: Log in to Docker Hub
+              uses: docker/login-action@v3.6.0
+              with:
+                  username: ${{ env.DOCKERHUB_USERNAME }}
+                  password: ${{ env.DOCKERHUB_TOKEN }}
+
             - name: Extract metadata
               id: meta
               uses: docker/metadata-action@v5.8.0
               with:
-                  images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+                  images: |
+                      ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+                      docker.io/${{ env.DOCKERHUB_USERNAME }}/mosml
                   tags: |
                       type=raw,value=latest
                       type=raw,value=${{ env.MOSML_VERSION }}
@@ -41,7 +51,7 @@ jobs:
                       type=ref,event=branch
                       type=ref,event=pr
 
-            - name: Build and push
+            - name: Build and push to GHCR and Docker Hub
               uses: docker/build-push-action@v6.18.0
               with:
                   context: .
