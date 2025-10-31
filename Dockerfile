@@ -29,4 +29,3 @@ WORKDIR /workspace
 VOLUME ["/workspace"]
 
 ENTRYPOINT ["mosml"]
-CMD ["--help"]
