@@ -1,0 +1,8 @@
+services:
+    mosml:
+        build: .
+        platform: linux/amd64
+        volumes:
+            - ./src:/workspace
+        stdin_open: true
+        tty: true
