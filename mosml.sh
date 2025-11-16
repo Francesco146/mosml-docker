@@ -39,6 +39,7 @@ fi
 
 # Esegue con docker run per evitare pull non necessari
 "$CONTAINER_ENGINE" run --rm -it \
+    --pull=never \
     --platform linux/amd64 \
     -v "$(pwd)/src:/workspace:Z" \
     "$SELECTED_IMAGE" "$@"
