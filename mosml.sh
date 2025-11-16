@@ -32,7 +32,7 @@ else
     fi
 fi
 
-# Esegue con docker run per evitare pull non necessari
+# Esegue con il container engine per evitare pull non necessari
 "$CONTAINER_ENGINE" run --rm -it \
     --pull=never \
     --platform linux/amd64 \
