@@ -1,11 +1,6 @@
 #!/bin/bash
 
-# Determina la container engine installata nel sistema
 CONTAINER_ENGINE=$(command -v podman &> /dev/null && echo "podman" || echo "docker")
-
-# Stampa a schermo una hint per debugging
-echo "Using container engine: $CONTAINER_ENGINE"
-
 IMAGE_NAME="ghcr.io/francesco146/mosml:latest"
 DOCKERHUB_IMAGE="docker.io/francescom0/mosml:latest"
 LOCAL_IMAGE_NAME="mosml:latest"
