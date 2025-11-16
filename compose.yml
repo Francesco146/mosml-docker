@@ -10,6 +10,6 @@ services:
         platform: linux/amd64
         container_name: mosml
         volumes:
-            - ./src:/workspace
+            - ./src:/workspace:z
         stdin_open: true
         tty: true
